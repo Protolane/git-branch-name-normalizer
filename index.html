@@ -16,8 +16,8 @@
         return document.getElementById("git-input").value;
       }
       
-      function getResultInput() {
-        return document.getElementById("git-result");
+      function getResultText() {
+        return document.getElementById("git-result").value;
       }
       
       function setResultText(text) {
@@ -31,23 +31,47 @@
       }
       
       function onClickCopyToClipboard() {
-        const copyText = getResultInput();
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-        document.execCommand("copy");
+        const result = getResultValue();
+        navigator.clipboard.writeText(result);
+      }
+    </script>
+    
+    <style>
+      
+      .container {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
       }
       
-    </script>
-    <h1>Hello world</h1>
-    <div>
-      <div>
+      .container, .container .label-and-input {
+        display: flex;
+        flex: 1;
+      }
+      
+      .container .label-and-input label {
+        font-weight: bold;
+      }
+      
+      .container .label-and-input input {
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+    </style>
+    
+    
+    <h1>Git branch name normalizer/sanitizer</h1>
+    <p>Paste any text in the input below and sanitize it into a git-compatible branch name</p>
+    
+    <div class="container">
+      <div class="label-and-input">
         <label for="git-input">Branch name:</label>
         <input id="git-input" type="text">
       </div>
       <button onClick="onClickNormalize()">Normalize!</button>
     </div>
-    <div>
-      <div>
+    
+    <div class="container">
+      <div class="label-and-input">
         <label for="git-result">Result:</label>
         <input id="git-result" type="text" disabled>
       </div>
