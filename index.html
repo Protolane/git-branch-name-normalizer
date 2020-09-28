@@ -6,7 +6,7 @@
     <script>
       function sanitize(name) {
         // this is the same logic used by VSCode here https://github.com/microsoft/vscode/blob/master/extensions/git/src/commands.ts#L1718
-        const branchWhitespaceChar = ' ';
+        const branchWhitespaceChar = '-';
         return name ?
           name.trim().replace(/^-+/, '').replace(/^\.|\/\.|\.\.|~|\^|:|\/$|\.lock$|\.lock\/|\\|\*|\s|^\s*$|\.$|\[|\]$/g, branchWhitespaceChar)
           : name;
