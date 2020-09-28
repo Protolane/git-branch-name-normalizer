@@ -3,6 +3,55 @@
   <head>
   </head>
   <body>
+    <script>
+      function sanitize(name) {
+        // this is the same logic used by VSCode here https://github.com/microsoft/vscode/blob/master/extensions/git/src/commands.ts#L1718
+        const branchWhitespaceChar = ' ';
+        return name ?
+          name.trim().replace(/^-+/, '').replace(/^\.|\/\.|\.\.|~|\^|:|\/$|\.lock$|\.lock\/|\\|\*|\s|^\s*$|\.$|\[|\]$/g, branchWhitespaceChar)
+          : name;
+      }
+      
+      function getInputText() {
+        return document.getElementById("git-input").value;
+      }
+      
+      function getResultInput() {
+        return document.getElementById("git-result");
+      }
+      
+      function setResultText(text) {
+        document.getElementById("git-result").value = text;
+      }
+      
+      function onClickNormalize() {
+        const inputValue = getInputText();
+        const sanitizedValue = sanitize(inputValue);
+        setResultText(sanitizedValue);
+      }
+      
+      function onClickCopyToClipboard() {
+        const copyText = getResultInput();
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+        document.execCommand("copy");
+      }
+      
+    </script>
     <h1>Hello world</h1>
+    <div>
+      <div>
+        <label for="git-input">Branch name:</label>
+        <input id="git-input" type="text">
+      </div>
+      <button onClick="onClickNormalize()">Normalize!</button>
+    </div>
+    <div>
+      <div>
+        <label for="git-result">Result:</label>
+        <input id="git-result" type="text" disabled>
+      </div>
+      <button onClick="onClickCopyToClipboard()">Copy to clipboard</button>
+    </div>
   </body>
 </html>
