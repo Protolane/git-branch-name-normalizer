@@ -9,11 +9,15 @@
   <body>
     <script>
       function sanitize(name) {
-        // this is the same logic used by VSCode here https://github.com/microsoft/vscode/blob/master/extensions/git/src/commands.ts#L1718
+        // this is an improved logic based on the same one used by VSCode here https://github.com/microsoft/vscode/blob/master/extensions/git/src/commands.ts#L1718
         const branchWhitespaceChar = '-';
         return name ?
-          name.trim().replace(/^-+/, '').replace(/^\.|\/\.|\.\.|~|\^|:|\/$|\.lock$|\.lock\/|\\|\*|\s|^\s*$|\.$|\[|\]$/g, branchWhitespaceChar)
+          (shouldTrimEmptySpaces() ? name.replace(/\s+/g, " ") : name).trim().replace(/^-+/, '').replace(/^\.|\/\.|\.\.|~|\^|:|\/$|\.lock$|\.lock\/|\\|\*|\s|^\s*$|\.$|\[|\]$/g, branchWhitespaceChar)
           : name;
+      }
+           
+      function shouldTrimEmptySpaces() {
+        return document.getElementById("trim").value;
       }
       
       function getInputText() {
@@ -78,6 +82,8 @@
         <label for="git-input">Branch name:</label>
         <input id="git-input" type="text">
       </div>
+      <input id="trim" type="checkbox">
+      <label for="trim">Trim consecutive white spaces</label>
       <button onClick="onClickNormalize()">Normalize!</button>
     </div>
     
