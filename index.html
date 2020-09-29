@@ -11,13 +11,19 @@
       function sanitize(name) {
         // this is an improved logic based on the same one used by VSCode here https://github.com/microsoft/vscode/blob/master/extensions/git/src/commands.ts#L1718
         const branchWhitespaceChar = '-';
-        return name ?
+        const output = name ?
           (shouldTrimEmptySpaces() ? name.replace(/\s+/g, " ") : name).trim().replace(/^-+/, '').replace(/^\.|\/\.|\.\.|~|\^|:|\/$|\.lock$|\.lock\/|\\|\*|\s|^\s*$|\.$|\[|\]$/g, branchWhitespaceChar)
           : name;
+        
+        return shouldLowerCase() ? output.toLowerCase() : output;
       }
            
       function shouldTrimEmptySpaces() {
-        return document.getElementById("trim").value;
+        return true;
+      }
+      
+      function shouldLowerCase() {
+        return true;
       }
       
       function getInputText() {
@@ -72,8 +78,6 @@
       }
     </style>
     
-    
-    
     <h1>Git branch name normalizer/sanitizer</h1>
     <p>Paste any text in the input below and sanitize it into a git-compatible branch name.</p>
     
@@ -82,8 +86,6 @@
         <label for="git-input">Branch name:</label>
         <input id="git-input" type="text">
       </div>
-      <input id="trim" type="checkbox">
-      <label for="trim">Trim consecutive white spaces</label>
       <button onClick="onClickNormalize()">Normalize!</button>
     </div>
     
